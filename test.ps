@@ -1,0 +1,22 @@
+$body = @{
+    players = @(
+        @{
+            id = 1
+            type = 0
+            score = 100
+        },
+        @{
+            id = 2
+            type = 1
+            score = 50
+        }
+    )
+} | ConvertTo-Json
+
+$headers = @{
+    "Content-Type" = "application/json"
+}
+
+$response = Invoke-RestMethod -Uri "http://localhost:8080/leaderboard/update" -Method Put -Body $body -Headers $headers
+
+$response
