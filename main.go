@@ -1,23 +1,38 @@
 package main
 
 import (
-	LeaderboardSVC "Microservice/leaderboardSVC"
-	RedisClient "Microservice/redis"
+	"Microservice/NFT"
+	MysqlClient "Microservice/mysql"
+	pb "Microservice/proto/NFT"
+	"flag"
+	"fmt"
 	"log"
-	_log "log"
-	"net/http"
-	"os"
+	"net"
+
+	"google.golang.org/grpc"
+)
+
+var (
+	port = flag.Int("port", 8080, "port to listen on")
 )
 
 func main() {
-	logger := _log.New(os.Stdout, "MSVC: ", _log.LstdFlags)
-	RedisClient.Init()
 
-	leaderboardSVC := LeaderboardSVC.LeaderboardSVC{L: logger}
-	http.HandleFunc("/leaderboard/update", leaderboardSVC.UpdateScore)
-	http.HandleFunc("/leaderboard/get", leaderboardSVC.GetScore)
+	//RedisClient.Init()
+	MysqlClient.Init()
 
-	logger.Println("Starting Server")
-	err := http.ListenAndServe(":8080", nil)
-	log.Fatal(err)
+	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+
+	s := grpc.NewServer()
+
+	pb.RegisterNFTServiceServer(s, &NFT.Service{})
+
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+
 }

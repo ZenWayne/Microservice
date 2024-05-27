@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "proto/NFT";
+
+package NFT;
+
+service NFTService {
+    rpc AddCollection (AddCollectionRequest) returns (AddCollectionResponse) {}
+}
+
+message AddCollectionRequest { string Addr = 1; }
+
+message AddCollectionResponse {
+  int32 status = 1;
+  string message = 2;
+}
