@@ -21,3 +21,4 @@ func Test(ctx context.Context, conn *grpc.ClientConn) {
 
 	log.Printf("AddCollection: %v", r)
 }
+

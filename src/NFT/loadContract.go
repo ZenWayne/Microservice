@@ -61,8 +61,10 @@ func (s *Service) AddCollection(ctx context.Context, in *pb.AddCollectionRequest
 		}
 		fmt.Println("fetched event: ", event)
 		dbrow :=Mysql.Transaction.Create().
-		SetFrom(strings.ToLower(string(event.From.Bytes())))
-		
+			SetFrom(strings.ToLower(event.From.Hex())).
+			SetTo(strings.ToLower(event.From.Hex())).
+			SetTokenId(event.TokenId)
+
 
 		builders[i] = dbrow
 	}
