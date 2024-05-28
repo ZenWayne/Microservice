@@ -1,0 +1,3 @@
+[submodule "erc721"]
+	path = erc721
+	url = https://github.com/i6o6i/erc721
