@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"log"
-	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -27,9 +26,7 @@ func main() {
 
 	defer conn.Close()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-
-	defer cancel()
+	ctx := context.Background()
 
 	testCase.Test(ctx, conn)
 }
