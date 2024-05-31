@@ -7,14 +7,14 @@ agent:
 
 blocks:
   - name: "Test"
-    env_vars:
-      - name: DB_USER
-        value: "ethadmin"
-      - name: DB_PASS
-        value: "123"
-      - name: DB_NAME
-        value: "emsvc"
     task:
+      env_vars:
+        - name: DB_USER
+          value: "ethadmin"
+        - name: DB_PASS
+          value: "123"
+        - name: DB_NAME
+          value: "emsvc"
       secrets:
         - name: INFURA_API
       jobs:
