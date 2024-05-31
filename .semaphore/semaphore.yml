@@ -37,6 +37,7 @@ blocks:
             - cache restore $(checksum main.go)
             - cache restore $(checksum config.toml)
             - ./bin/main 8001 -config ./config.toml &
+            - cd ./server
             - go test ./test -config="$PWD/config.toml" -run TestAddCollection -v
             - go test ./test -config="$PWD/config.toml" -run TestGetTransaction -v
       env_vars:
