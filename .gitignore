@@ -21,9 +21,6 @@ containers/redis/*/*
 !containers/redis-single/redis-data/
 containers/redis-single/redis-data/*
 
-server/ent/*
-!server/ent/schema/
-
 .env
 config.toml
 
