@@ -1,7 +1,6 @@
 package resources
 
 import (
-	"log"
 	"server/conf"
 
 	"github.com/ethereum/go-ethereum/ethclient"
@@ -21,7 +20,7 @@ func InitGeth() {
 	if err != nil {
 		panic(err)
 	}
-	log.Printf("InitGeth url:" + ethurl)
+	//log.Printf("InitGeth url:" + ethurl)
 	BAYC_ADDR = conf.Config.Eth.BAYC_ADDR
 	BLOCK_START = conf.Config.Eth.BLOCK_START
 	BLOCK_END = conf.Config.Eth.BLOCK_END
