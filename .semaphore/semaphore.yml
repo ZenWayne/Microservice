@@ -9,7 +9,7 @@ blocks:
     dependencies: []
     task:
       jobs:
-        - name: go get & build
+        - name: Build Server and Test
           commands:
             - checkout
             - sed -i "s/API_KEY/$API_KEY/g" ./config.example.toml
@@ -19,6 +19,7 @@ blocks:
             - cd ./server
             - go get
             - go build -o ./bin/main
+            - go test ./test -c -o ./bin/test
             - cache store $(checksum main.go) bin
       secrets:
         - name: INFURA_API
@@ -37,9 +38,8 @@ blocks:
             - cache restore $(checksum main.go)
             - cache restore $(checksum config.toml)
             - ./bin/main 8001 -config ./config.toml &
-            - cd ./server
-            - go test ./test -config="$PWD/config.toml" -run TestAddCollection -v
-            - go test ./test -config="$PWD/config.toml" -run TestGetTransaction -v
+            - ./bin/test -config="$PWD/config.toml" -test.run TestAddCollection -test.v
+            - ./bin/test -config="$PWD/config.toml" -test.run TestGetTransaction -test.v
       env_vars:
         - name: DB_USER
           value: ethadmin
