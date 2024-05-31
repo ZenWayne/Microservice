@@ -17,8 +17,15 @@ containers/redis/*/*
 !containers/redis/*/nodes.conf
 !containers/redis/*/redis.conf
 
+!containers/redis-single/
+!containers/redis-single/redis-data/
+containers/redis-single/redis-data/*
+
 server/ent/*
 !server/ent/schema/
+
+.env
+config.toml
 
 
 # Test binary, built with `go test -c`

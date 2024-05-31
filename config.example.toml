@@ -1,0 +1,42 @@
+env="test"
+
+[mysql]
+[mysql.test]
+ip = "localhost"
+port = 3306
+user = "root"
+pass = "123"
+db = "emsvc"
+[mysql.production]
+ip = "localhost"
+port = 3306
+
+[server]
+# You can indent as you please. Tabs or spaces. TOML don't care.
+[server.test]
+ip = "0.0.0.0"
+port = 8080
+
+[server.production]
+ip = "0.0.0.0"
+port = 8080
+
+[ethereum]
+[ethereum.sepolia]
+rpc_url="https://sepolia.infura.io/v3/"
+api_key="<KEY>"
+BAYC_ADDR="0x3D8CB09B47cAdfe5Cb7C34058c70E1A3a91Ba145"
+BLOCK_START=5999294 
+BLOCK_END=5999294
+[ethereum.optimism]
+rpc_url="https://optimism-sepolia.infura.io/v3/"
+api_key="<KEY>"
+BAYC_ADDR="0xC2DD0D9B8b632eF3F1c1159Cc86546778fEe431E"
+BLOCK_START=12585726 
+BLOCK_END=0
+[ethereum.mainnet]
+rpc_url="https://mainnet.infura.io/v3/"
+api_key="<KEY>"
+BAYC_ADDR="0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
+BLOCK_START=19973752 
+BLOCK_END=19974469

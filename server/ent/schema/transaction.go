@@ -29,7 +29,21 @@ func (Transaction) Fields() []ent.Field {
 			return addr, nil
 		},
 	}
+	hashScannerFunc := field.ValueScannerFunc[common.Hash, *sql.NullString]{
+		V: func(hash common.Hash) (driver.Value, error) {
+			return hash.Hex(), nil
+		},
+		S: func(ns *sql.NullString) (common.Hash, error) {
+			if !ns.Valid {
+				return common.Hash{}, nil
+			}
+			hash := common.HexToHash(ns.String)
+			return hash, nil
+		},
+	}
 	return []ent.Field{
+		field.Uint64("blockNumber"),
+		field.String("txHash").NotEmpty().GoType(common.Hash{}).ValueScanner(hashScannerFunc),
 		field.String("from").NotEmpty().GoType(common.Address{}).ValueScanner(addressScannerFunc),
 		field.String("to").NotEmpty().GoType(common.Address{}).ValueScanner(addressScannerFunc),
 		field.String("tokenId").GoType(&big.Int{}).ValueScanner(field.TextValueScanner[*big.Int]{}),

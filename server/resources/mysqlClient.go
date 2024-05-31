@@ -1,10 +1,12 @@
-package NFT
+package resources
 
 import (
-	"Microservice/server/ent"
 	"context"
 	"fmt"
 	"log"
+	"server/ent"
+
+	"server/conf"
 
 	"entgo.io/ent/dialect"
 	_ "github.com/go-sql-driver/mysql"
@@ -22,11 +24,11 @@ func initTable() {
 }
 
 func InitMysql() {
-	host := "localhost"
-	port := "3306"
-	user := "root"
-	pass := "123"
-	db_name := "emsvc"
+	host := conf.Config.MySQL.IP
+	port := fmt.Sprint(conf.Config.MySQL.Port)
+	user := conf.Config.MySQL.User
+	pass := conf.Config.MySQL.Pass
+	db_name := conf.Config.MySQL.DB
 	//dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc",
 	//user, pass, host, post, db_name)
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",

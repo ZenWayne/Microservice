@@ -1,26 +1,29 @@
 package main
 
 import (
-	pb "Microservice/proto/NFT"
-	"Microservice/server/NFT"
-	"flag"
 	"fmt"
 	"log"
 	"net"
+	"os"
+	"server/NFT"
+	"server/conf"
+	pb "server/proto/NFT"
+	"server/resources"
 
 	"google.golang.org/grpc"
 )
 
-var (
-	port = flag.Int("port", 8080, "port to listen on")
-)
-
 func main() {
-	//RedisClient.Init()
-	NFT.InitMysql()
-	NFT.InitGeth()
+	dir, _ := os.Getwd()
+	conf.InitConfig(dir + "/../")
 
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
+	//RedisClient.Init()
+	resources.InitMysql()
+	resources.InitRedis()
+	resources.InitGeth()
+	NFT.Initvar()
+
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", conf.Config.Server.IP, conf.Config.Server.PORT))
 
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
