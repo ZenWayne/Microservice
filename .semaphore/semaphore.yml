@@ -20,6 +20,8 @@ blocks:
             - go get
             - go build -o ./bin/main
             - cache store $(checksum main.go) bin
+      secrets:
+        - name: INFURA_API
   - name: Run
     dependencies:
       - Build
@@ -37,3 +39,10 @@ blocks:
             - ./bin/main 8001 -config ./config.toml &
             - go test ./test -config="$PWD/config.toml" -run TestAddCollection -v
             - go test ./test -config="$PWD/config.toml" -run TestGetTransaction -v
+      env_vars:
+        - name: DB_USER
+          value: ethadmin
+        - name: DB_NAME
+          value: emsvc
+        - name: DB_PASS
+          value: '123'
