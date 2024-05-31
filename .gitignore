@@ -5,6 +5,26 @@
 *.so
 *.dylib
 
+containers/**/
+!containers/mysql/
+!containers/mysql/mysql-data
+containers/mysql/mysql-data/*
+!containers/mysql/docker-compose.yml
+
+!containers/redis/
+!containers/redis/*/
+containers/redis/*/*
+!containers/redis/*/nodes.conf
+!containers/redis/*/redis.conf
+
+!containers/redis-single/
+!containers/redis-single/redis-data/
+containers/redis-single/redis-data/*
+
+.env
+config.toml
+
+
 # Test binary, built with `go test -c`
 *.test
 

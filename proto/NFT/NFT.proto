@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+option go_package = "proto/NFT";
+
+package NFT;
+
+service NFTService {
+    rpc AddCollection (AddCollectionRequest) returns (AddCollectionResponse) {}
+    rpc GetTransaction (GetTransactionRequest) returns (GetTransactionResponse) {}
+}
+
+message AddCollectionRequest { 
+  string Addr = 1; 
+  string name = 2;
+  uint64 start_block = 3;
+}
+
+message AddCollectionResponse {
+  int32 status = 1;
+  string message = 2;
+}
+
+message GetTransactionRequest {
+  string Addr = 1;
+}
+
+message Transaction {
+  uint64 blocknumber = 1;
+  string txhash = 2;
+  string from = 3;
+  string to = 4;
+  bytes tokenId = 5;
+}
+
+message GetTransactionResponse {
+  int32 status = 1;
+  repeated Transaction transactions = 2;
+}
