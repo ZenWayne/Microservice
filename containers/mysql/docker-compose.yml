@@ -1,17 +1,16 @@
 version: '3'
 services:
   mysql:
-    image: mysql
+    image: mysql:8.0
     container_name: mysql-server
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - /tmp/mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: 123
       MYSQL_ROOT_HOST: '%'
-      MYSQL_DEFAULT_AUTHENTICATION_PLUGIN: mysql_native_password
+      #MYSQL_DEFAULT_AUTHENTICATION_PLUGIN: mysql_native_password
+    command: ["mysqld", "--default-authentication-plugin=mysql_native_password"]
     ports:
       - "3306:3306"
     restart: unless-stopped
 
-volumes:
-  mysql-data:
