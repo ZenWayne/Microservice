@@ -31,6 +31,13 @@ blocks:
             - mysql -h 127.0.0.1 -P 3306 -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
             - mysql -h 127.0.0.1 -P 3306 -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO $DB_USER@'%';"
             - sem-service status mysql
+      env_vars:
+        - name: DB_USER
+          value: ethadmin
+        - name: DB_PASS
+          value: '123'
+        - name: DB_NAME
+          value: emsvc
   - name: Run
     dependencies:
       - Build
