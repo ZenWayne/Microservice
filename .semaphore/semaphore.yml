@@ -40,7 +40,8 @@ blocks:
             - sed -i "s/API_KEY/$API_KEY/g" ./config.example.toml
             - mv ./config.example.toml ./config.toml
             - cache restore bin
-            - ./bin/main 8001 -config ./config.toml &
+            - ./bin/main -config ./config.toml &
+            - sleep 2
             - ./bin/test -config="$PWD/config.toml" -test.run TestAddCollection -test.v
             - ./bin/test -config="$PWD/config.toml" -test.run TestGetTransaction -test.v
       env_vars:
