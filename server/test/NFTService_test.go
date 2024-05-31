@@ -2,9 +2,9 @@ package NFT
 
 import (
 	"context"
+	"flag"
 	"log"
 	"math/big"
-	"os"
 	BAYC "server/Contract"
 	"server/NFT"
 	"server/conf"
@@ -19,10 +19,14 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+var (
+	configFile = flag.String("config", "./config.toml", "path to config file")
+)
+
 func Init() {
-	dir, _ := os.Getwd()
+	flag.Parse()
 	//fmt.Println("Init() :", dir)
-	conf.InitConfig(dir + "/../../")
+	conf.InitConfig(configFile)
 	resources.InitGeth()
 	NFT.Initvar()
 }

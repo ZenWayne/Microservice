@@ -1,0 +1,56 @@
+version: v1.0
+name: Go
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu2004
+global_job_config:
+  # Connect secret to all jobs in the pipeline
+
+blocks:
+  - name: "Test"
+    env_vars:
+      - name: DB_USER
+        value: "ethadmin"
+      - name: DB_PASS
+        value: "123"
+      - name: DB_NAME
+        value: "emsvc"
+    task:
+      secrets:
+        - name: INFURA_API
+      jobs:
+        - name: go get & build
+          commands:
+            - checkout
+            - sed -i "s/API_KEY/$API_KEY/g" ./config.example.toml
+            - mv ./config.example.toml ./config.toml
+            - cache store $(checksum config.toml) config.toml
+            - sem-version go 1.22.2
+            - cd ./server
+            - go get
+            - go build -o ./bin/main
+            - cache store $(checksum main.go) bin
+
+        - name: Start mysql
+          commands:
+            - sem-service start mysql
+            - sudo apt-get install -y -qq mysql-client
+            - mysql -h 127.0.0.1 -P 3306 -u root -e "CREATE USER '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';"
+            - mysql -e 'CREATE DATABASE $DB_NAME;'
+            - sem-service status mysql
+
+        - name: Test web server
+          commands:
+            - cache restore $(checksum main.go)
+            - cache restore $(checksum config.toml)
+            - ./bin/main 8001 -config ./config.toml &
+
+        - name: Run Test
+          commands:
+            - sem-version go 1.22.2
+            - checkout
+            - cd ./server
+            - go get ./...
+            - go test ./test -config="$PWD/../config.toml" -run TestAddCollection -v
+            - go test ./test -config="$PWD/../config.toml" -run TestGetTransaction -v

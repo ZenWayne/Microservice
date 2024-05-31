@@ -1,15 +1,29 @@
 env="test"
+eth_network="optimism"
+redis_type="cluster"
 
 [mysql]
 [mysql.test]
 ip = "localhost"
 port = 3306
-user = "root"
+user = "ethadmin"
 pass = "123"
 db = "emsvc"
 [mysql.production]
 ip = "localhost"
 port = 3306
+
+[redis]
+[redis.test]
+iscluster= false
+#servers = [ "172.20.0.1:6379", "172.20.0.2:6380", "172.20.0.3:6381"]
+server = ["127.0.0.1:6379"]
+pass = "123"
+
+[redis.production]
+iscluster= false
+server = [ "172.20.0.1:6379", "172.20.0.2:6380", "172.20.0.3:6381"]
+pass = "123"
 
 [server]
 # You can indent as you please. Tabs or spaces. TOML don't care.
@@ -24,19 +38,19 @@ port = 8080
 [ethereum]
 [ethereum.sepolia]
 rpc_url="https://sepolia.infura.io/v3/"
-api_key="<KEY>"
+api_key="API_KEY"
 BAYC_ADDR="0x3D8CB09B47cAdfe5Cb7C34058c70E1A3a91Ba145"
 BLOCK_START=5999294 
 BLOCK_END=5999294
 [ethereum.optimism]
 rpc_url="https://optimism-sepolia.infura.io/v3/"
-api_key="<KEY>"
+api_key="API_KEY"
 BAYC_ADDR="0xC2DD0D9B8b632eF3F1c1159Cc86546778fEe431E"
 BLOCK_START=12585726 
 BLOCK_END=0
 [ethereum.mainnet]
 rpc_url="https://mainnet.infura.io/v3/"
-api_key="<KEY>"
+api_key="API_KEY"
 BAYC_ADDR="0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
 BLOCK_START=19973752 
 BLOCK_END=19974469

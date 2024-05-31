@@ -1,10 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net"
-	"os"
 	"server/NFT"
 	"server/conf"
 	pb "server/proto/NFT"
@@ -13,9 +13,13 @@ import (
 	"google.golang.org/grpc"
 )
 
+var (
+	configFile = flag.String("config", "./config.toml", "path to config file")
+)
+
 func main() {
-	dir, _ := os.Getwd()
-	conf.InitConfig(dir + "/../")
+	flag.Parse()
+	conf.InitConfig(configFile)
 
 	//RedisClient.Init()
 	resources.InitMysql()

@@ -54,9 +54,9 @@ type ethereum struct {
 
 var Config *serverConf
 
-func InitConfig(path string) {
+func InitConfig(path *string) {
 	tomlConf := &tomlconfig{}
-	if _, err := toml.DecodeFile(path+"config.toml", &tomlConf); err != nil {
+	if _, err := toml.DecodeFile(*path, &tomlConf); err != nil {
 		panic(err)
 	}
 	//log.Printf("tomlConf: %v", *tomlConf)
