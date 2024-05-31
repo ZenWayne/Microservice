@@ -12,15 +12,12 @@ blocks:
         - name: Build Server and Test
           commands:
             - checkout
-            - echo $API_KEY
-            - sed -i "s/API_KEY/$API_KEY/g" ./config.example.toml
-            - mv ./config.example.toml ./config.toml
-            - cache store conf config.toml
             - sem-version go 1.22.2
             - cd ./server
             - go get
             - go build -o ./bin/main
             - go test ./test -c -o ./bin/test
+            - cache clear
             - cache store bin bin
       secrets:
         - name: INFURA_API
@@ -39,8 +36,10 @@ blocks:
             - sem-service status mysql
             - sem-service start redis 7.0
             - sem-service status redis
+            - checkout
+            - sed -i "s/API_KEY/$API_KEY/g" ./config.example.toml
+            - mv ./config.example.toml ./config.toml
             - cache restore bin
-            - cache restore conf
             - ./bin/main 8001 -config ./config.toml &
             - ./bin/test -config="$PWD/config.toml" -test.run TestAddCollection -test.v
             - ./bin/test -config="$PWD/config.toml" -test.run TestGetTransaction -test.v
@@ -51,3 +50,5 @@ blocks:
           value: emsvc
         - name: DB_PASS
           value: '123'
+      secrets:
+        - name: INFURA_API
