@@ -8,6 +8,8 @@ blocks:
   - name: Build
     dependencies: []
     task:
+      secrets:
+        - name: INFURA_API
       jobs:
         - name: go get & build
           commands:
