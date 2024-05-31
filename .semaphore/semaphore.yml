@@ -20,45 +20,20 @@ blocks:
             - go get
             - go build -o ./bin/main
             - cache store $(checksum main.go) bin
-  - name: Setup
-    dependencies: []
+  - name: Run
+    dependencies:
+      - Build
     task:
       jobs:
-        - name: Start mysql
+        - name: Test web server
           commands:
             - sem-service start mysql 8.0
             - sudo apt-get install -y -qq mysql-client
             - mysql -h 127.0.0.1 -P 3306 -u root -e "CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PASS';"
             - mysql -h 127.0.0.1 -P 3306 -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO $DB_USER@'%';"
             - sem-service status mysql
-      env_vars:
-        - name: DB_USER
-          value: ethadmin
-        - name: DB_PASS
-          value: '123'
-        - name: DB_NAME
-          value: emsvc
-  - name: Run
-    dependencies:
-      - Build
-      - Setup
-    task:
-      jobs:
-        - name: Test web server
-          commands:
             - cache restore $(checksum main.go)
             - cache restore $(checksum config.toml)
             - ./bin/main 8001 -config ./config.toml &
-  - name: Test
-    dependencies:
-      - Run
-    task:
-      jobs:
-        - name: UnitTest
-          commands:
-            - sem-version go 1.22.2
-            - checkout
-            - cd ./server
-            - go get ./...
-            - go test ./test -config="$PWD/../config.toml" -run TestAddCollection -v
-            - go test ./test -config="$PWD/../config.toml" -run TestGetTransaction -v
+            - go test ./test -config="$PWD/config.toml" -run TestAddCollection -v
+            - go test ./test -config="$PWD/config.toml" -run TestGetTransaction -v
