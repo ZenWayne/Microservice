@@ -13,7 +13,8 @@ services:
     image: redis/redis-stack:latest
     command: redis-server /data/redis.conf --port 6379 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --cluster-announce-ip 172.20.0.1 --cluster-announce-port 6379 
     volumes:
-      - ./redis-master1:/data
+      - /tmp/redis-master1:/data
+      - ./redis.conf:/data/redis.conf
     ports:
       - "6379:6379"
     networks:
@@ -25,7 +26,8 @@ services:
     image: redis/redis-stack:latest
     command: redis-server /data/redis.conf --port 6380 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --cluster-announce-ip 172.20.0.2 --replica-announce-ip 172.20.0.2 
     volumes:
-      - ./redis-master2:/data
+      - /tmp/redis-master2:/data
+      - ./redis.conf:/data/redis.conf
     ports:
       - "6380:6380"
     networks:
@@ -36,7 +38,8 @@ services:
     image: redis/redis-stack:latest
     command: redis-server /data/redis.conf --port 6381 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --cluster-announce-ip 172.20.0.3 --cluster-announce-port 6381
     volumes:
-      - ./redis-master3:/data
+      - /tmp/redis-master3:/data
+      - ./redis.conf:/data/redis.conf
     ports:
       - "6381:6381"
     networks:
@@ -47,7 +50,8 @@ services:
     image: redis/redis-stack:latest
     command: redis-server /data/redis.conf --port 6382 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --logfile redis-replica1.log --replica-announce-ip 172.20.0.4 --cluster-announce-ip 172.20.0.4 
     volumes:
-      - ./redis-replica1:/data
+      - /tmp/redis-replica1:/data
+      - ./redis.conf:/data/redis.conf
     ports:
       - "6382:6382"
     networks:
@@ -58,7 +62,8 @@ services:
     image: redis/redis-stack:latest
     command: redis-server /data/redis.conf --port 6383 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --replica-announce-ip 172.20.0.5 --cluster-announce-ip 172.20.0.5 
     volumes:
-      - ./redis-replica2:/data
+      - /tmp/redis-replica2:/data
+      - ./redis.conf:/data/redis.conf
     ports:
       - "6383:6383"
     networks:
@@ -69,7 +74,8 @@ services:
     image: redis/redis-stack:latest
     command: redis-server /data/redis.conf --port 6384 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --replica-announce-ip 172.20.0.6 --replica-announce-port 6384 --cluster-announce-ip 172.20.0.6 --cluster-announce-port 6384
     volumes:
-      - ./redis-replica3:/data
+      - /tmp/redis-replica3:/data
+      - ./redis.conf:/data/redis.conf
     ports:
       - "6384:6384"
     networks:
