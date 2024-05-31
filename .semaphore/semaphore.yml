@@ -12,14 +12,12 @@ blocks:
         - name: Build Server and Test
           commands:
             - checkout
-            - sed -i "s/API_KEY/$API_KEY/g" ./config.example.toml
-            - mv ./config.example.toml ./config.toml
-            - cache store conf config.toml
             - sem-version go 1.22.2
             - cd ./server
             - go get
             - go build -o ./bin/main
             - go test ./test -c -o ./bin/test
+            - cache clear
             - cache store bin bin
       secrets:
         - name: INFURA_API
@@ -36,9 +34,14 @@ blocks:
             - mysql -h 127.0.0.1 -P 3306 -u root -e "CREATE DATABASE $DB_NAME;"
             - mysql -h 127.0.0.1 -P 3306 -u root -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO $DB_USER@'%';"
             - sem-service status mysql
+            - sem-service start redis 7.0
+            - sem-service status redis
+            - checkout
+            - sed -i "s/API_KEY/$API_KEY/g" ./config.example.toml
+            - mv ./config.example.toml ./config.toml
             - cache restore bin
-            - cache restore conf
-            - ./bin/main 8001 -config ./config.toml &
+            - ./bin/main -config ./config.toml &
+            - sleep 2
             - ./bin/test -config="$PWD/config.toml" -test.run TestAddCollection -test.v
             - ./bin/test -config="$PWD/config.toml" -test.run TestGetTransaction -test.v
       env_vars:
@@ -48,3 +51,5 @@ blocks:
           value: emsvc
         - name: DB_PASS
           value: '123'
+      secrets:
+        - name: INFURA_API
