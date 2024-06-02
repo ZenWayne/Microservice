@@ -2,6 +2,16 @@ env="test"
 eth_network="optimism"
 redis_type="cluster"
 
+[server]
+# You can indent as you please. Tabs or spaces. TOML don't care.
+[server.test]
+ip = "0.0.0.0"
+port = 8080
+
+[server.production]
+ip = "0.0.0.0"
+port = 8080
+
 [mysql]
 [mysql.test]
 ip = "localhost"
@@ -15,8 +25,7 @@ port = 3306
 
 [redis]
 [redis.test]
-iscluster= false
-#servers = [ "172.20.0.1:6379", "172.20.0.2:6380", "172.20.0.3:6381"]
+#server = [ "172.20.0.1:6379", "172.20.0.2:6380", "172.20.0.3:6381"]
 server = ["127.0.0.1:6379"]
 pass = "123"
 
@@ -24,16 +33,6 @@ pass = "123"
 iscluster= false
 server = [ "172.20.0.1:6379", "172.20.0.2:6380", "172.20.0.3:6381"]
 pass = "123"
-
-[server]
-# You can indent as you please. Tabs or spaces. TOML don't care.
-[server.test]
-ip = "0.0.0.0"
-port = 8080
-
-[server.production]
-ip = "0.0.0.0"
-port = 8080
 
 [ethereum]
 [ethereum.sepolia]

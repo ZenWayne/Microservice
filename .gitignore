@@ -21,6 +21,8 @@ containers/redis/*/*
 !containers/redis-single/redis-data/
 containers/redis-single/redis-data/*
 
+k8s/*-secret.yaml
+
 .env
 config.toml
 

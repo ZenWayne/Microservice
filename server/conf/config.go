@@ -1,8 +1,44 @@
 package conf
 
 import (
+	"log"
+
 	"github.com/BurntSushi/toml"
 )
+
+type ServerConf struct {
+	Server Server
+	MySQL  Database
+	Redis  Redis
+	Eth    Ethereum
+}
+
+type Server struct {
+	IP   string
+	PORT int
+}
+
+type Database struct {
+	IP   string
+	Port int
+	User string
+	Pass string
+	DB   string
+}
+
+type Redis struct {
+	IsCluster bool
+	Server    []string
+	Pass      string
+}
+
+type Ethereum struct {
+	RPC_URL     string
+	API_KEY     string
+	BAYC_ADDR   string
+	BLOCK_START uint64
+	BLOCK_END   uint64
+}
 
 const (
 	Test       string = "test"
@@ -12,47 +48,13 @@ const (
 type tomlconfig struct {
 	Env         string
 	Eth_Network string
-	MySQL       map[string]database
-	Redis       map[string]redis
-	Server      map[string]server
-	Eth         map[string]ethereum `toml:"ethereum"`
+	Server      map[string]Server
+	MySQL       map[string]Database
+	Redis       map[string]Redis
+	Eth         map[string]Ethereum `toml:"ethereum"`
 }
 
-type serverConf struct {
-	MySQL  database
-	Server server
-	Redis  redis
-	Eth    ethereum
-}
-
-type server struct {
-	IP   string
-	PORT int
-}
-
-type database struct {
-	IP   string
-	Port int
-	User string
-	Pass string
-	DB   string
-}
-
-type redis struct {
-	IsCluster bool
-	Server    []string
-	Pass      string
-}
-
-type ethereum struct {
-	RPC_URL     string
-	API_KEY     string
-	BAYC_ADDR   string
-	BLOCK_START uint64
-	BLOCK_END   uint64
-}
-
-var Config *serverConf
+var Config *ServerConf
 
 func InitConfig(path *string) {
 	tomlConf := &tomlconfig{}
@@ -60,11 +62,11 @@ func InitConfig(path *string) {
 		panic(err)
 	}
 	//log.Printf("tomlConf: %v", *tomlConf)
-	Config = &serverConf{
+	Config = &ServerConf{
 		MySQL:  tomlConf.MySQL[tomlConf.Env],
 		Server: tomlConf.Server[tomlConf.Env],
 		Redis:  tomlConf.Redis[tomlConf.Env],
 		Eth:    tomlConf.Eth[tomlConf.Eth_Network],
 	}
-	//log.Printf("Config: %v", *Config)
+	log.Printf("Config: %v", *Config)
 }

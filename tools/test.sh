@@ -1,5 +1,5 @@
 #!/bin/bash
 cd ./server
 go clean -testcache
-go test ./test -run TestAddCollection -v
+go test ./test -config=../config.toml -run TestAddCollection -v
 cd -

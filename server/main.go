@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -13,13 +12,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-var (
-	configFile = flag.String("config", "./config.toml", "path to config file")
-)
-
 func main() {
-	flag.Parse()
-	conf.InitConfig(configFile)
 
 	//RedisClient.Init()
 	resources.InitMysql()

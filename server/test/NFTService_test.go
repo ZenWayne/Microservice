@@ -3,6 +3,7 @@ package NFT
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"math/big"
 	BAYC "server/Contract"
@@ -20,7 +21,7 @@ import (
 )
 
 var (
-	configFile = flag.String("config", "./config.toml", "path to config file")
+	configFile = flag.String("config", "config.toml", "path to config file")
 )
 
 func Init() {
@@ -32,7 +33,8 @@ func Init() {
 }
 
 func TestAddCollection(t *testing.T) {
-	conn, err := grpc.NewClient("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	Init()
+	conn, err := grpc.NewClient(fmt.Sprintf("%s:%d", conf.Config.Server.IP, conf.Config.Server.PORT), grpc.WithTransportCredentials(insecure.NewCredentials()))
 
 	if err != nil {
 		log.Fatalf("failed to connect to server: %v", err)
@@ -55,8 +57,7 @@ func TestAddCollection(t *testing.T) {
 }
 
 func TestGetTransaction(t *testing.T) {
-	Init()
-	conn, err := grpc.Dial("localhost:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.NewClient(fmt.Sprintf("%s:%d", conf.Config.Server.IP, conf.Config.Server.PORT), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		t.Fatalf("failed to connect: %v", err)
 	}
