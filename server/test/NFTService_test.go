@@ -57,6 +57,7 @@ func TestAddCollection(t *testing.T) {
 }
 
 func TestGetTransaction(t *testing.T) {
+	Init()
 	conn, err := grpc.NewClient(fmt.Sprintf("%s:%d", conf.Config.Server.IP, conf.Config.Server.PORT), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		t.Fatalf("failed to connect: %v", err)
